@@ -1,4 +1,5 @@
 import bcrypt from "bcryptjs";
+import { hashPasswordByPassword } from "../base/ServiceAll";
 
 interface IRegisterUser {
   name: string;
@@ -20,18 +21,11 @@ class RegisterUser implements IRegisterUser {
   static async create(tempUser: IRegisterUser): Promise<RegisterUser> {
     this.validateNewIfNotNull(tempUser);
     await this.hashPassword(tempUser);
-
     return new RegisterUser(tempUser.name, tempUser.email, tempUser.password);
   }
 
   private static async hashPassword(tempUser: IRegisterUser) {
-    try {
-      const saltRounds = 10;
-      const hash = await bcrypt.hash(tempUser.password, saltRounds);
-      tempUser.password = hash;
-    } catch (error) {
-      throw new Error("PWD INVALID");
-    }
+    tempUser.password = await hashPasswordByPassword(tempUser.password);
   }
 
   private static validateNewIfNotNull(tempUser: IRegisterUser): void {

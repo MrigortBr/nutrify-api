@@ -15,8 +15,7 @@ class Server {
   constructor() {
     this.app = express();
     this.loadConfig();
-    this.loadRoutes();
-    this.loadConfigErros();
+    this.loadRoutesAndMiddlewares();
     this.listenServer();
   }
 
@@ -25,11 +24,8 @@ class Server {
     this.app.use(cors());
   }
 
-  private loadRoutes() {
-    this.app.use(RegisterRoutes());
-  }
-
-  private loadConfigErros() {
+  private async loadRoutesAndMiddlewares() {
+    this.app.use(await RegisterRoutes());
     this.app.use(errorHandler);
   }
 

@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { IUser } from "./users";
+import { generateKeyJWT } from "../base/ServiceAll";
 
 interface ISendedUser {
   email: string;
@@ -42,9 +43,7 @@ class SendedUser implements ISendedUser {
   }
 
   async generateJWT() {
-    try {
-      this.jwtKey = jwt.sign({ id: this.id }, "privateKEY");
-    } catch (error) {}
+    if (this.id) this.jwtKey = await generateKeyJWT(this.id);
   }
 }
 
