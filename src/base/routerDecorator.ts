@@ -77,18 +77,17 @@ export function RegisterRoutes() {
 
 function showTable() {
   if (process.env.DEV) {
-    const formattedLog = tableLog.map(
-      ({ method, functionName, classParent, fullPath, middlewares, middlewareController }) => ({
-        Method: method,
-        "Route Name": functionName,
-        "Controller Name": classParent,
-        URL: fullPath,
-        "Middlewares Rota": middlewares,
-        "Middlewares Controller": middlewareController,
-      }),
-    );
+    const formattedLog = tableLog.map(({ method, functionName, classParent, fullPath, middlewares, middlewareController }) => ({
+      Method: method,
+      "Route Name": functionName,
+      "Controller Name": classParent,
+      URL: fullPath,
+      "Middlewares Rota": middlewares,
+      "Middlewares Controller": middlewareController,
+    }));
     console.table(formattedLog);
   }
 }
 
-import "../controllers/about/AboutController";
+import "../Modules/about/Controller";
+import "../Modules/login/Controller";

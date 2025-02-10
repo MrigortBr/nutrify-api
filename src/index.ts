@@ -3,6 +3,7 @@ import express from "express";
 import "./base/routerDecorator";
 import { RegisterRoutes } from "./base/routerDecorator";
 import cors from "cors";
+import { errorHandler } from "./middlewares/errorHandler";
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ class Server {
     this.app = express();
     this.loadConfig();
     this.loadRoutes();
+    this.loadConfigErros();
     this.listenServer();
   }
 
@@ -25,6 +27,10 @@ class Server {
 
   private loadRoutes() {
     this.app.use(RegisterRoutes());
+  }
+
+  private loadConfigErros() {
+    this.app.use(errorHandler);
   }
 
   private listenServer() {

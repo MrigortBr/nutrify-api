@@ -1,0 +1,56 @@
+import bcrypt from "bcryptjs";
+
+interface IRegisterUser {
+  name: string;
+  email: string;
+  password: string;
+}
+
+class RegisterUser implements IRegisterUser {
+  name: string;
+  email: string;
+  password: string;
+
+  private constructor(name: string, email: string, password: string) {
+    this.name = name;
+    this.email = email;
+    this.password = password;
+  }
+
+  static async create(tempUser: IRegisterUser): Promise<RegisterUser> {
+    this.validateNewIfNotNull(tempUser);
+    await this.hashPassword(tempUser);
+
+    return new RegisterUser(tempUser.name, tempUser.email, tempUser.password);
+  }
+
+  private static async hashPassword(tempUser: IRegisterUser) {
+    try {
+      const saltRounds = 10;
+      const hash = await bcrypt.hash(tempUser.password, saltRounds);
+      tempUser.password = hash;
+    } catch (error) {
+      throw new Error("PWD INVALID");
+    }
+  }
+
+  private static validateNewIfNotNull(tempUser: IRegisterUser): void {
+    if (!tempUser) {
+      throw new Error("PE-IFLR");
+    }
+
+    const isNameValid = tempUser.name !== null && tempUser.name !== undefined && tempUser.name.trim() !== "";
+    const isEmailValid = tempUser.email !== null && tempUser.email !== undefined && tempUser.email.trim() !== "";
+    const isPasswordValid = tempUser.password !== null && tempUser.password !== undefined && tempUser.password.trim() !== "";
+
+    if (!isNameValid && !isEmailValid && !isPasswordValid) {
+      throw new Error("PE-IFLR");
+    }
+
+    if (!isNameValid) throw new Error("PE-IFLR-NA");
+    if (!isEmailValid) throw new Error("PE-IFLR-EM");
+    if (!isPasswordValid) throw new Error("PE-IFLR-PW");
+  }
+}
+
+export { RegisterUser, IRegisterUser };

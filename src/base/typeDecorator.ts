@@ -9,6 +9,7 @@ export type Controllers = {
 export type Methods = "get" | "post" | "delete" | "put";
 
 export type Middleware = (req: Request, res: Response, next: NextFunction) => void;
+export type MiddlewareError = (err: Error, req: Request, res: Response, next: NextFunction) => void;
 
 export type Routes = {
   method: Methods;
