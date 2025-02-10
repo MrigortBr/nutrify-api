@@ -99,7 +99,7 @@ async function loadControllers() {
   const modules = fs.readdirSync(modulesPath);
 
   for (const module of modules) {
-    const controllerPath = path.join(modulesPath, module, "Controller.ts");
+    const controllerPath = path.join(modulesPath, module, "Controller" + path.extname(__filename));
 
     if (fs.existsSync(controllerPath)) {
       await import(controllerPath);
